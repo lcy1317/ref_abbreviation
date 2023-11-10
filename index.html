@@ -43,7 +43,7 @@
             var inputString = document.getElementById("inputString").value;
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://127.0.0.1:12345/getAbbr?input=" + inputString, true);
+            xhr.open("GET", "http://0.0.0.0:12345/getAbbr?input=" + inputString, true);
 
             xhr.onload = function () {
                 if (xhr.status >= 200 && xhr.status < 400) {

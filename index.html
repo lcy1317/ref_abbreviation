@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Request Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>缩写测试测试</h1>
+    <input type="text" id="inputString" placeholder="Enter a string">
+    <button onclick="makeRequest()">Submit</button>
+    <div id="response"></div>
+
+    <script>
+        function makeRequest() {
+            var inputString = document.getElementById("inputString").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://127.0.0.1:12345/getAbbr?input=" + inputString, true);
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    document.getElementById("response").innerHTML = xhr.responseText;
+                } else {
+                    console.error("Error: " + xhr.statusText);
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error("Error: Network Error");
+            };
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

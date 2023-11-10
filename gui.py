@@ -4,7 +4,7 @@ import re
 import pandas as pd
 
 def process_text(reference):
-    df = pd.read_excel('abbreviation.xlsx')
+    df = pd.read_excel('abbs.xlsx')
     abbreviations = df['abbreviation'].tolist()
     replacements = df['replacement'].tolist()
     prep = ["on", "in", "of", "and", "but", "at", "the"]

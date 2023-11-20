@@ -1,64 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTTP Request Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Yiheng Jiang">
+    <title>期刊、会议名缩写</title>
+    <!-- Bootstrap core CSS -->
+    <link href="./middleware/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+    <script src="./middleware/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <!-- Custom styles for this template -->
+    <link href="middleware/login-floating-labels.css" rel="stylesheet">
 
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        #response {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-        }
-    </style>
+    <!-- Javascripts -->
+    <script src="middleware/taidu_common.js"></script>
+    <script src="middleware/taidu_smartcommunity.js"></script>
+    <script src="middleware/jq-3.6.0.js"></script>
 </head>
+
 <body>
-    <h1>缩写测试测试</h1>
-    <input type="text" id="inputString" placeholder="Enter a string">
-    <button onclick="makeRequest()">Submit</button>
-    <div id="response"></div>
+<form class="form-signin" style="background-color: rgba(235, 235, 235, 0.5); padding: 2rem;">
+    <div class="text-center mb-4">
+        <img class="mb-4" src="images/favicon2.png" alt="" width="80" height="80">
+        <h1 class="h4 mb-3 font-weight-normal" id="btn_to_list">期刊、会议名润饰</h1>
+    </div>
+<!--    <div class="col">-->
+<!--        <label for="toabbr" class="form-label">期刊会议名：</label>-->
+<!--        <input type="text" class="form-control" id="toabbr" placeholder="Journal">-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <center><a class="btn btn-sm btn-primary btn-block" id="btn_abbr" type="button">提交润饰</a></center>-->
+<!--    </div>-->
+    <div class="col">
+        <label for="toabbr" class="form-label">期刊会议名:</label>
 
-    <script>
-        function makeRequest() {
-            var inputString = document.getElementById("inputString").value;
+        <input type="text" class="form-control" id="toabbr" placeholder="J."
+               style="opacity: 0.8; margin-bottom: 20px;">
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://0.0.0.0:12345/getAbbr?input=" + inputString, true);
 
-            xhr.onload = function () {
-                if (xhr.status >= 200 && xhr.status < 400) {
-                    document.getElementById("response").innerHTML = xhr.responseText;
-                } else {
-                    console.error("Error: " + xhr.statusText);
+    </div>
+
+    <div>
+
+        <center><a class="btn btn-sm btn-primary btn-block" id="btn_abbr" type="button"
+                   style="padding: 10px 20px; font-size: 18px; margin-top: 20px;">提交润饰</a></center>
+
+    </div>
+    <div class="col">
+        <label for="response" class="form-label">润饰结果：</label>
+        <input type="text" class="form-control" id="response" placeholder="J."
+               style="opacity: 0.8; margin-bottom: 20px;">
+    </div>
+
+    <!-- 用于提示错误信息，默认隐藏该标签 -->
+    <div class="box" id="warning" style="display: none">
+        <p></p>
+    </div>
+    <div>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; 2023 落城雨</p>
+    </div>
+</form>
+
+<script>
+
+    var inputString = document.getElementById("toabbr").value;
+    var baseURL = "http://120.27.131.20:12345/getAbbr?input="+inputString;
+
+    document.getElementById("btn_abbr").onclick = function () {
+        // alert(inputString)
+        // window.location.reload();
+        request('GET',baseURL,
+            function (status, output) {
+                if (output !== undefined && output.code === 500) {
+                    alert(output.message);
+                } else if (output !== undefined && output.code === 200) {
+                    // alert(output.message);
+                    document.getElementById("response").value = output.message;
                 }
-            };
-
-            xhr.onerror = function () {
-                console.error("Error: Network Error");
-            };
-
-            xhr.send();
-        }
-    </script>
+            });
+    };
+</script>
 </body>
+
 </html>

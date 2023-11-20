@@ -7,10 +7,11 @@ replacements = df['replacement'].tolist()
 
 def getStr(reference):
     # reference = 'Proceedings of the 2020 conference on Computer Vision'
-    prep = ["on", "in", "of", "and", "but", "at", "the"]
-    # remove all words in prep in reference to single space
-    reference = re.sub(r'\b(?:%s)\b' % '|'.join(prep), '', reference)
-    reference = re.sub(r'\s+', ' ', reference)
+    prep = ["on", "in", "of", "and", "but", "at", "the","On", "In", "Of", "And", "But", "At", "The"]
+    # 将预置词列表转换为正则表达式模式
+    prep_pattern = r'\b(?:' + '|'.join(map(re.escape, prep)) + r')\b'
+    reference = re.sub(prep_pattern, '', reference, flags=re.IGNORECASE)
+    reference = reference.strip()
     # replace word A in string reference to word B
     def replace(str,A,B):
         str = re.sub(r'\b'+A+r'\b',B,str,flags=re.IGNORECASE)
@@ -58,8 +59,15 @@ class Resquest(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type')
         self.end_headers()
-        self.wfile.write(bytes(content,"utf8"))
+        # 构造json错误响应
+        res = {
+            "code": 200,
+            "message": content
+        }
+        json_data = json.dumps(res)
 
+        # 发送json响应体
+        self.wfile.write(json_data.encode())
     def sendpostsuccess(self,content):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')

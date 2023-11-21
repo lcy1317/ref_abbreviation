@@ -86,17 +86,6 @@ function getApiUrl(api) {
  * @param callback_p pointer callback function must accept status code and data string as inputs
  */
 function request(method, url, callback_p) {
-    // parse
-    // var form_data = JSON.stringify(params);
-    // if (form_data === "[]")
-    //     form_data = "";
-    // var out = [];
-    // for (var key in params) {
-    //     if (params.hasOwnProperty(key)) {
-    //         out.push(key + '=' + encodeURIComponent(params[key]));
-    //     }
-    // }
-    // out = out.join('&');
 
     // make request
     $.ajax({
@@ -107,6 +96,11 @@ function request(method, url, callback_p) {
         contentType: 'application/json; charset=utf-8',
         // data: form_data,
         type: method,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*'); // 允许所有来源访问
+            xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // 允许的请求方法
+            xhr.setRequestHeader('Access-Control-Allow-Headers', 'Content-Type'); // 允许的请求头
+        },
         success: function (output, status, xhr) {
             console.log("success");
             callback_p(status, output);

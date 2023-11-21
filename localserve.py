@@ -7,7 +7,7 @@ replacements = df['replacement'].tolist()
 
 def getStr(reference):
     # reference = 'Proceedings of the 2020 conference on Computer Vision'
-    prep = ["on", "in", "of", "and", "but", "at", "the","On", "In", "Of", "And", "But", "At", "The"]
+    prep = ["on", "in", "of", "and", "but", "at", "the", "or", "On", "In", "Of", "And", "But", "At", "The", "Or"]
     # 将预置词列表转换为正则表达式模式
     prep_pattern = r'\b(?:' + '|'.join(map(re.escape, prep)) + r')\b'
     reference = re.sub(prep_pattern, '', reference, flags=re.IGNORECASE)
